@@ -1,0 +1,109 @@
+  - name: Create openshift-monitoring namespace
+    k8s:
+      name: openshift-monitoring
+      api_version: v1
+      kind: Namespace
+      state: present
+
+
+  - name: Monitoring infrastructure node selector and taint toleration
+    k8s:
+      state: present
+      api_version: v1
+      definition:
+        kind: ConfigMap
+        metadata:
+          name: cluster-monitoring-config
+          namespace: openshift-monitoring
+        data:
+          config.yaml: |+
+            alertmanagerMain:
+              nodeSelector:
+                node-role.kubernetes.io/infra: ""
+              tolerations:
+                - effect: NoSchedule
+                  key: infra
+                  value: reserved
+                - effect: NoExecute
+                  key: infra
+                  value: reserved
+            prometheusK8s:
+              nodeSelector:
+                node-role.kubernetes.io/infra: ""
+              tolerations:
+                - effect: NoSchedule
+                  key: infra
+                  value: reserved
+                - effect: NoExecute
+                  key: infra
+                  value: reserved
+            prometheusOperator:
+              nodeSelector:
+                node-role.kubernetes.io/infra: ""
+              tolerations:
+                - effect: NoSchedule
+                  key: infra
+                  value: reserved
+                - effect: NoExecute
+                  key: infra
+                  value: reserved
+            grafana:
+              nodeSelector:
+                node-role.kubernetes.io/infra: ""
+              tolerations:
+                - effect: NoSchedule
+                  key: infra
+                  value: reserved
+                - effect: NoExecute
+                  key: infra
+                  value: reserved
+            k8sPrometheusAdapter:
+              nodeSelector:
+                node-role.kubernetes.io/infra: ""
+              tolerations:
+                - effect: NoSchedule
+                  key: infra
+                  value: reserved
+                - effect: NoExecute
+                  key: infra
+                  value: reserved
+            kubeStateMetrics:
+              nodeSelector:
+                node-role.kubernetes.io/infra: ""
+              tolerations:
+                - effect: NoSchedule
+                  key: infra
+                  value: reserved
+                - effect: NoExecute
+                  key: infra
+                  value: reserved
+            telemeterClient:
+              nodeSelector:
+                node-role.kubernetes.io/infra: ""
+              tolerations:
+                - effect: NoSchedule
+                  key: infra
+                  value: reserved
+                - effect: NoExecute
+                  key: infra
+                  value: reserved
+            openshiftStateMetrics:
+              nodeSelector:
+                node-role.kubernetes.io/infra: ""
+              tolerations:
+                - effect: NoSchedule
+                  key: infra
+                  value: reserved
+                - effect: NoExecute
+                  key: infra
+                  value: reserved
+            thanos-querier:
+              nodeSelector:
+                node-role.kubernetes.io/infra: ""
+              tolerations:
+                - effect: NoSchedule
+                  key: infra
+                  value: reserved
+                - effect: NoExecute
+                  key: infra
+                  value: reserved

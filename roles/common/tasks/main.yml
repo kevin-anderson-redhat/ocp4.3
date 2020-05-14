@@ -1,0 +1,35 @@
+---
+  - name: Fail when cluster name not specified
+    fail:
+      msg: "ocp_cluster_name is undefined.  Was an inventory specified?  (ansible-playbook -i ocpXYZ.yaml test.yml)"
+    when: ocp_cluster_name is undefined
+
+  - name: Get an existing Service object
+    k8s_info:
+      api_version: v1
+      kind: Node
+    register: cluster_nodes
+
+  - name: Set just the node names
+    set_fact:
+      cluster_node_names: "{{ cluster_nodes.resources | json_query('[*].metadata.name') }}"
+
+  - name: Check that all cluster nodes are listed in the inventory
+    fail:
+      msg: "Check {{ item }} is a node"
+    when:  item not in groups.all
+    loop: "{{ cluster_node_names }}"
+    loop_control:
+      extended: yes
+      label: "{{ item }}"
+
+
+  - name: Check that inventory hosts are in cluster node list
+    fail:
+      msg: "Check {{ item }} is in inventory"
+    when:  item not in cluster_node_names
+    loop: "{{ groups.all }}"
+    loop_control:
+      extended: yes
+      label: "{{ item }}"
+

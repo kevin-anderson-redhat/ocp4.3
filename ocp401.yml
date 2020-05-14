@@ -1,0 +1,43 @@
+all:
+  children:
+    master:
+        hosts:
+          tiamaster100.ocp401.ti.com:
+          tiamaster101.ocp401.ti.com:
+          tiamaster102.ocp401.ti.com:
+    infra:
+        hosts:
+          tiaworker100.ocp401.ti.com:
+          tiaworker101.ocp401.ti.com:
+          tiaworker102.ocp401.ti.com:
+    worker:
+        hosts:
+          tiaworker103.ocp401.ti.com:
+          tiaworker104.ocp401.ti.com:
+          tiaworker105.ocp401.ti.com:
+  vars:
+    ocp_cluster_name: ocp401
+    pv_requirements:
+      nfs_path: /ocp_root/
+      nfs_server: nfsexport01.ti.com
+      # defaults:
+      #  reclaimPolicy: Recycle
+      #  accessModes: ReadWriteOnce
+      resources:
+      - storageClassName: thin
+        size: "20Gi"
+        quantity: 14
+      - storageClassName: thin
+        size: "5Gi"
+        quantity: 20
+      - storageClassName: logging
+        size: "150Gi"
+        quantity: 3
+      - storageClassName: infra
+        size: "50Gi"
+        quantity: 2
+      - storageClassName: infra
+        size: "100Gi"
+        quantity: 1
+        accessModes: ReadWriteMany
+        reclaimPolicy: Retain

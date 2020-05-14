@@ -1,0 +1,192 @@
+  # /usr/local/bin/oc create -f eo-namespace.yaml 
+  - name: Openshift operators redhat namespace
+    k8s:
+      name: openshift-operators-redhat 
+      state: present
+      api_version: v1
+      kind: Namespace
+      definition:
+        metadata:
+          annotations:
+            openshift.io/node-selector: ""
+          labels:
+            openshift.io/cluster-monitoring: "true"
+
+  # /usr/local/bin/oc create -f eo-og.yaml 
+  - name: Openshift-Operators-RedHat  OperatorGroup
+    k8s:
+      state: present
+      definition:
+        apiVersion: operators.coreos.com/v1
+        kind: OperatorGroup
+        metadata:
+          name: openshift-operators-redhat
+          namespace: openshift-operators-redhat 
+        spec: {}
+
+  # /usr/local/bin/oc create -f eo-sub.yaml 
+  - name: ElasticSearch Operator subscription
+    k8s:
+      state: present
+      definition:
+        apiVersion: operators.coreos.com/v1alpha1
+        kind: Subscription
+        metadata:
+          name: "elasticsearch-operator"
+          namespace: "openshift-operators-redhat" 
+        spec:
+          channel: "4.3" 
+          installPlanApproval: "Automatic"
+          source: "redhat-operators" 
+          sourceNamespace: "openshift-marketplace"
+          name: "elasticsearch-operator"
+
+  # /usr/local/bin/oc create -f eo-rbac.yaml 
+  - name: Prometheus role
+    k8s:
+      state: present
+      definition:
+        apiVersion: rbac.authorization.k8s.io/v1
+        kind: Role
+        metadata:
+          name: prometheus-k8s
+          namespace: openshift-operators-redhat
+        rules:
+        - apiGroups:
+          - ""
+          resources:
+          - services
+          - endpoints
+          - pods
+          verbs:
+          - get
+          - list
+          - watch
+
+  - name: Prometheus role binding
+    k8s:
+      state: present
+      definition:
+        apiVersion: rbac.authorization.k8s.io/v1
+        kind: RoleBinding
+        metadata:
+          name: prometheus-k8s
+          namespace: openshift-operators-redhat
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Role
+          name: prometheus-k8s
+        subjects:
+        - kind: ServiceAccount
+          name: prometheus-k8s
+          namespace: openshift-operators-redhat
+#
+# openshift-operators-redhat
+#
+
+  # /usr/local/bin/oc create -f clo-namespace.yaml 
+  - name: Namespace openshift-logging 
+    k8s:
+      state: present
+      api_version: logging.openshift.io/v1
+      definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: openshift-logging
+        annotations:
+          openshift.io/node-selector: ""
+        labels:
+          openshift.io/cluster-monitoring: "true"
+
+
+  # /usr/local/bin/oc create -f clo-og.yaml 
+  - name: Cluster logging operator group
+    k8s:
+      state: present
+      definition:
+        apiVersion: operators.coreos.com/v1
+        kind: OperatorGroup
+        metadata:
+          name: cluster-logging
+          namespace: openshift-logging 
+        spec:
+          targetNamespaces:
+          - openshift-logging
+
+  # /usr/local/bin/oc create -f clo-sub.yaml
+  - name: Cluster logging subscription
+    k8s:
+      state: present
+      definition:
+        apiVersion: operators.coreos.com/v1alpha1
+        kind: Subscription
+        metadata:
+          name: cluster-logging
+          namespace: openshift-logging 
+        spec:
+          channel: "4.3" 
+          name: cluster-logging
+          source: redhat-operators 
+          sourceNamespace: openshift-marketplace
+
+
+  - name: Logging infrastructure node selection and taint toleration
+    k8s:
+      state: present
+      definition:
+        apiVersion: logging.openshift.io/v1
+        kind: "ClusterLogging"
+        metadata:
+          name: "instance"
+          namespace: "openshift-logging"
+        spec:
+          managementState: "Managed"
+          logStore:
+            type: "elasticsearch"
+            elasticsearch:
+              nodeSelector:
+                node-role.kubernetes.io/infra: ''
+              type: "elasticsearch"
+              tolerations:
+                - effect: NoSchedule
+                  key: infra
+                  value: reserved
+                - effect: NoExecute
+                  key: infra
+                  value: reserved
+          visualization:
+            type: "kibana"
+            kibana:
+              nodeSelector:
+                node-role.kubernetes.io/infra: ''
+              tolerations:
+                - effect: NoSchedule
+                  key: infra
+                  value: reserved
+                - effect: NoExecute
+                  key: infra
+                  value: reserved
+          curation:
+            type: "curator"
+            curator:
+              nodeSelector:
+                node-role.kubernetes.io/infra: ''
+              tolerations:
+                - effect: NoSchedule
+                  key: infra
+                  value: reserved
+                - effect: NoExecute
+                  key: infra
+                  value: reserved
+          collection:
+            logs:
+              type: "fluentd"
+              fluentd:
+                tolerations:
+                  - effect: NoSchedule
+                    key: infra
+                    value: reserved
+                  - effect: NoExecute
+                    key: infra
+                    value: reserved

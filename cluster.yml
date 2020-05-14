@@ -1,0 +1,11 @@
+---
+- name: OpenShift Container Platform 4.3+ Post Deployment Cluster Configuration
+  gather_facts: no
+  hosts: localhost
+  become: false
+
+  roles:
+  - common
+  #- infrastructure
+  - network_policy
+

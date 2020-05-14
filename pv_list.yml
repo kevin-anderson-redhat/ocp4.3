@@ -1,0 +1,977 @@
+changed: false
+failed: false
+resources:
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T18:21:04Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401101
+    resourceVersion: '20649628'
+    selfLink: /api/v1/persistentvolumes/ocp401101
+    uid: a4409877-4c65-4e21-a107-bbc714978d6c
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 20Gi}
+    nfs: {path: /ocp_root/ocp401101, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {kubectl.kubernetes.io/last-applied-configuration: '{"apiVersion":"v1","kind":"PersistentVolume","metadata":{"annotations":{},"name":"ocp401102"},"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"20Gi"},"nfs":{"path":"/ocp_root/ocp401102","server":"nfsexport01.ti.com"},"persistentVolumeReclaimPolicy":"Recycle","storageClassName":"thin"}}
+
+        ', pv.kubernetes.io/bound-by-controller: 'yes'}
+    creationTimestamp: '2020-04-21T18:50:50Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401102
+    resourceVersion: '13287293'
+    selfLink: /api/v1/persistentvolumes/ocp401102
+    uid: fb6dc8b7-dd56-4b47-8ffd-f35575086403
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 20Gi}
+    claimRef: {apiVersion: v1, kind: PersistentVolumeClaim, name: nexus-pv, namespace: nixon2,
+      resourceVersion: '13204502', uid: 27c774e9-d883-401d-b344-c2d1d6ef1c67}
+    nfs: {path: /ocp_root/ocp401102, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Bound}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {kubectl.kubernetes.io/last-applied-configuration: '{"apiVersion":"v1","kind":"PersistentVolume","metadata":{"annotations":{},"name":"ocp401103"},"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"20Gi"},"nfs":{"path":"/ocp_root/ocp401103","server":"nfsexport01.ti.com"},"persistentVolumeReclaimPolicy":"Recycle","storageClassName":"thin"}}
+
+        ', pv.kubernetes.io/bound-by-controller: 'yes'}
+    creationTimestamp: '2020-04-21T18:50:50Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401103
+    resourceVersion: '20491305'
+    selfLink: /api/v1/persistentvolumes/ocp401103
+    uid: ae4c1908-0da1-4bff-b5f2-664b3f633d70
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 20Gi}
+    claimRef: {apiVersion: v1, kind: PersistentVolumeClaim, name: jenkins, namespace: pipeline2,
+      resourceVersion: '20491303', uid: 67eefa8a-f75b-42ad-bf3e-23d23ae78b99}
+    nfs: {path: /ocp_root/ocp401103, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Bound}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {pv.kubernetes.io/bound-by-controller: 'yes'}
+    creationTimestamp: '2020-05-11T18:21:04Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401104
+    resourceVersion: '21546582'
+    selfLink: /api/v1/persistentvolumes/ocp401104
+    uid: 9edc0ead-481c-47bc-b26f-682afbe5a5a7
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 20Gi}
+    claimRef: {apiVersion: v1, kind: PersistentVolumeClaim, name: nexus-pv, namespace: pipeline4,
+      resourceVersion: '21546580', uid: c33fd318-3806-4cc8-b647-aea7470fa2cc}
+    nfs: {path: /ocp_root/ocp401104, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Bound}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {kubectl.kubernetes.io/last-applied-configuration: '{"apiVersion":"v1","kind":"PersistentVolume","metadata":{"annotations":{},"name":"ocp401105"},"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"50Gi"},"nfs":{"path":"/ocp_root/ocp401105","server":"nfsexport01.ti.com"},"persistentVolumeReclaimPolicy":"Recycle","storageClassName":"infra"}}
+
+        '}
+    creationTimestamp: '2020-04-21T18:50:50Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401105
+    resourceVersion: '15951'
+    selfLink: /api/v1/persistentvolumes/ocp401105
+    uid: d1d195f3-1acc-404f-ace5-54106df2cdad
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 50Gi}
+    nfs: {path: /ocp_root/ocp401105, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: infra
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {kubectl.kubernetes.io/last-applied-configuration: '{"apiVersion":"v1","kind":"PersistentVolume","metadata":{"annotations":{},"name":"ocp401106"},"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"50Gi"},"nfs":{"path":"/ocp_root/ocp401106","server":"nfsexport01.ti.com"},"persistentVolumeReclaimPolicy":"Recycle","storageClassName":"infra"}}
+
+        ', pv.kubernetes.io/bound-by-controller: 'yes'}
+    creationTimestamp: '2020-04-21T18:50:50Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401106
+    resourceVersion: '18057'
+    selfLink: /api/v1/persistentvolumes/ocp401106
+    uid: 7d309a8a-96cc-4480-aba5-5c775e2fb6af
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 50Gi}
+    claimRef: {apiVersion: v1, kind: PersistentVolumeClaim, name: prometheus-k8s-db-prometheus-k8s-0,
+      namespace: openshift-monitoring, resourceVersion: '18054', uid: 19dc4307-e918-44b1-b15e-33d3c06696cc}
+    nfs: {path: /ocp_root/ocp401106, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: infra
+    volumeMode: Filesystem
+  status: {phase: Bound}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {kubectl.kubernetes.io/last-applied-configuration: '{"apiVersion":"v1","kind":"PersistentVolume","metadata":{"annotations":{},"name":"ocp401107"},"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"50Gi"},"nfs":{"path":"/ocp_root/ocp401107","server":"nfsexport01.ti.com"},"persistentVolumeReclaimPolicy":"Recycle","storageClassName":"infra"}}
+
+        '}
+    creationTimestamp: '2020-04-21T18:50:50Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401107
+    resourceVersion: '15955'
+    selfLink: /api/v1/persistentvolumes/ocp401107
+    uid: c98baff5-5a82-43f5-8af0-307a81e49b3e
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 50Gi}
+    nfs: {path: /ocp_root/ocp401107, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: infra
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {kubectl.kubernetes.io/last-applied-configuration: '{"apiVersion":"v1","kind":"PersistentVolume","metadata":{"annotations":{},"name":"ocp401108"},"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"50Gi"},"nfs":{"path":"/ocp_root/ocp401108","server":"nfsexport01.ti.com"},"persistentVolumeReclaimPolicy":"Recycle","storageClassName":"infra"}}
+
+        '}
+    creationTimestamp: '2020-04-21T18:50:50Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401108
+    resourceVersion: '15957'
+    selfLink: /api/v1/persistentvolumes/ocp401108
+    uid: 2c43d363-52e0-4e49-818f-e5a4c9b7b90e
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 50Gi}
+    nfs: {path: /ocp_root/ocp401108, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: infra
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {kubectl.kubernetes.io/last-applied-configuration: '{"apiVersion":"v1","kind":"PersistentVolume","metadata":{"annotations":{},"name":"ocp401109"},"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"50Gi"},"nfs":{"path":"/ocp_root/ocp401109","server":"nfsexport01.ti.com"},"persistentVolumeReclaimPolicy":"Recycle","storageClassName":"infra"}}
+
+        '}
+    creationTimestamp: '2020-04-21T18:50:50Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401109
+    resourceVersion: '15959'
+    selfLink: /api/v1/persistentvolumes/ocp401109
+    uid: dbc9e54f-2351-424e-a565-3fdaf92163a2
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 50Gi}
+    nfs: {path: /ocp_root/ocp401109, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: infra
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {kubectl.kubernetes.io/last-applied-configuration: '{"apiVersion":"v1","kind":"PersistentVolume","metadata":{"annotations":{},"name":"ocp401110"},"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"50Gi"},"nfs":{"path":"/ocp_root/ocp401110","server":"nfsexport01.ti.com"},"persistentVolumeReclaimPolicy":"Recycle","storageClassName":"infra"}}
+
+        ', pv.kubernetes.io/bound-by-controller: 'yes'}
+    creationTimestamp: '2020-04-21T18:50:50Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401110
+    resourceVersion: '18066'
+    selfLink: /api/v1/persistentvolumes/ocp401110
+    uid: b3ac436c-a056-453f-a0a9-6db42dc097e1
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 50Gi}
+    claimRef: {apiVersion: v1, kind: PersistentVolumeClaim, name: prometheus-k8s-db-prometheus-k8s-1,
+      namespace: openshift-monitoring, resourceVersion: '18061', uid: 20c889b5-0567-4f59-9250-3de65e9d282d}
+    nfs: {path: /ocp_root/ocp401110, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: infra
+    volumeMode: Filesystem
+  status: {phase: Bound}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {kubectl.kubernetes.io/last-applied-configuration: '{"apiVersion":"v1","kind":"PersistentVolume","metadata":{"annotations":{},"name":"ocp401111"},"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"75Gi"},"nfs":{"path":"/ocp_root/ocp401111","server":"nfsexport01.ti.com"},"persistentVolumeReclaimPolicy":"Recycle","storageClassName":"thic"}}
+
+        '}
+    creationTimestamp: '2020-04-21T18:50:50Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401111
+    resourceVersion: '13301373'
+    selfLink: /api/v1/persistentvolumes/ocp401111
+    uid: 1fb8b54e-6be6-4cc9-888f-ca87c4af709c
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 75Gi}
+    nfs: {path: /ocp_root/ocp401111, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thic
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {kubectl.kubernetes.io/last-applied-configuration: '{"apiVersion":"v1","kind":"PersistentVolume","metadata":{"annotations":{},"name":"ocp401112"},"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"75Gi"},"nfs":{"path":"/ocp_root/ocp401112","server":"nfsexport01.ti.com"},"persistentVolumeReclaimPolicy":"Recycle","storageClassName":"thic"}}
+
+        '}
+    creationTimestamp: '2020-04-21T18:50:50Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401112
+    resourceVersion: '13301374'
+    selfLink: /api/v1/persistentvolumes/ocp401112
+    uid: d4497896-5909-4dd8-81a5-5e0c9a4070b0
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 75Gi}
+    nfs: {path: /ocp_root/ocp401112, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thic
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {kubectl.kubernetes.io/last-applied-configuration: '{"apiVersion":"v1","kind":"PersistentVolume","metadata":{"annotations":{},"name":"ocp401113"},"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"75Gi"},"nfs":{"path":"/ocp_root/ocp401113","server":"nfsexport01.ti.com"},"persistentVolumeReclaimPolicy":"Recycle","storageClassName":"thic"}}
+
+        '}
+    creationTimestamp: '2020-04-21T18:50:50Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401113
+    resourceVersion: '13301375'
+    selfLink: /api/v1/persistentvolumes/ocp401113
+    uid: 4ec0d43c-d95d-4740-b427-6b40aa6c585b
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 75Gi}
+    nfs: {path: /ocp_root/ocp401113, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thic
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {kubectl.kubernetes.io/last-applied-configuration: '{"apiVersion":"v1","kind":"PersistentVolume","metadata":{"annotations":{},"name":"ocp401114"},"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"75Gi"},"nfs":{"path":"/ocp_root/ocp401114","server":"nfsexport01.ti.com"},"persistentVolumeReclaimPolicy":"Recycle","storageClassName":"thic"}}
+
+        '}
+    creationTimestamp: '2020-04-21T18:50:50Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401114
+    resourceVersion: '13301376'
+    selfLink: /api/v1/persistentvolumes/ocp401114
+    uid: 0e96906f-bfa3-4e9e-80bf-16397f5504a5
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 75Gi}
+    nfs: {path: /ocp_root/ocp401114, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thic
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {kubectl.kubernetes.io/last-applied-configuration: '{"apiVersion":"v1","kind":"PersistentVolume","metadata":{"annotations":{},"name":"ocp401115"},"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"100Gi"},"nfs":{"path":"/ocp_root/ocp401115","server":"nfsexport01.ti.com"},"persistentVolumeReclaimPolicy":"Recycle","storageClassName":"gold"}}
+
+        ', pv.kubernetes.io/bound-by-controller: 'yes'}
+    creationTimestamp: '2020-04-21T18:50:50Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401115
+    resourceVersion: '16600921'
+    selfLink: /api/v1/persistentvolumes/ocp401115
+    uid: e1eb37c8-4a98-4e3a-84b5-f92d10952cc0
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 200Gi}
+    claimRef: {apiVersion: v1, kind: PersistentVolumeClaim, name: elasticsearch-elasticsearch-cdm-a24h018b-3,
+      namespace: openshift-logging, resourceVersion: '16600912', uid: eea21b0c-8c1d-4eff-a737-ea3fd3e50664}
+    nfs: {path: /ocp_root/ocp401115, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: logging
+    volumeMode: Filesystem
+  status: {phase: Bound}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {kubectl.kubernetes.io/last-applied-configuration: '{"apiVersion":"v1","kind":"PersistentVolume","metadata":{"annotations":{},"name":"ocp401116"},"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"100Gi"},"nfs":{"path":"/ocp_root/ocp401116","server":"nfsexport01.ti.com"},"persistentVolumeReclaimPolicy":"Recycle","storageClassName":"gold"}}
+
+        ', pv.kubernetes.io/bound-by-controller: 'yes'}
+    creationTimestamp: '2020-04-21T18:50:50Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401116
+    resourceVersion: '16600916'
+    selfLink: /api/v1/persistentvolumes/ocp401116
+    uid: 695234b7-096a-450c-a80f-27c613f9e00f
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 200Gi}
+    claimRef: {apiVersion: v1, kind: PersistentVolumeClaim, name: elasticsearch-elasticsearch-cdm-a24h018b-2,
+      namespace: openshift-logging, resourceVersion: '16600910', uid: 2cdfacbb-b2d2-433b-8fa8-5826c40e8773}
+    nfs: {path: /ocp_root/ocp401116, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: logging
+    volumeMode: Filesystem
+  status: {phase: Bound}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {kubectl.kubernetes.io/last-applied-configuration: '{"apiVersion":"v1","kind":"PersistentVolume","metadata":{"annotations":{},"name":"ocp401117"},"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"100Gi"},"nfs":{"path":"/ocp_root/ocp401117","server":"nfsexport01.ti.com"},"persistentVolumeReclaimPolicy":"Recycle","storageClassName":"gold"}}
+
+        ', pv.kubernetes.io/bound-by-controller: 'yes'}
+    creationTimestamp: '2020-04-21T18:50:50Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401117
+    resourceVersion: '16600911'
+    selfLink: /api/v1/persistentvolumes/ocp401117
+    uid: 5af05d20-27e0-4389-af10-af355fed7a65
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 200Gi}
+    claimRef: {apiVersion: v1, kind: PersistentVolumeClaim, name: elasticsearch-elasticsearch-cdm-a24h018b-1,
+      namespace: openshift-logging, resourceVersion: '16600908', uid: 461059f0-920c-4a9f-8781-0c7df3ee0a74}
+    nfs: {path: /ocp_root/ocp401117, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: logging
+    volumeMode: Filesystem
+  status: {phase: Bound}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {kubectl.kubernetes.io/last-applied-configuration: '{"apiVersion":"v1","kind":"PersistentVolume","metadata":{"annotations":{},"name":"ocp401118"},"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"100Gi"},"nfs":{"path":"/ocp_root/ocp401118","server":"nfsexport01.ti.com"},"persistentVolumeReclaimPolicy":"Recycle","storageClassName":"gold"}}
+
+        '}
+    creationTimestamp: '2020-04-21T18:50:50Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401118
+    resourceVersion: '13301380'
+    selfLink: /api/v1/persistentvolumes/ocp401118
+    uid: 2a1bd494-ff5d-413b-a575-799fa17ecc4c
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 100Gi}
+    nfs: {path: /ocp_root/ocp401118, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: gold
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {kubectl.kubernetes.io/last-applied-configuration: '{"apiVersion":"v1","kind":"PersistentVolume","metadata":{"annotations":{},"name":"ocp401119"},"spec":{"accessModes":["ReadWriteOnce"],"capacity":{"storage":"100Gi"},"nfs":{"path":"/ocp_root/ocp401119","server":"nfsexport01.ti.com"},"persistentVolumeReclaimPolicy":"Recycle","storageClassName":"gold"}}
+
+        '}
+    creationTimestamp: '2020-04-21T18:50:50Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401119
+    resourceVersion: '13301381'
+    selfLink: /api/v1/persistentvolumes/ocp401119
+    uid: bde74eae-392d-4feb-9ed8-50eb40533b80
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 100Gi}
+    nfs: {path: /ocp_root/ocp401119, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: gold
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {kubectl.kubernetes.io/last-applied-configuration: '{"apiVersion":"v1","kind":"PersistentVolume","metadata":{"annotations":{},"name":"ocp401120"},"spec":{"accessModes":["ReadWriteMany"],"capacity":{"storage":"100Gi"},"nfs":{"path":"/ocp_root/ocp401120","server":"nfsexport01.ti.com"},"persistentVolumeReclaimPolicy":"Retain","storageClassName":"infra"}}
+
+        ', pv.kubernetes.io/bound-by-controller: 'yes'}
+    creationTimestamp: '2020-04-21T18:50:50Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401120
+    resourceVersion: '16019'
+    selfLink: /api/v1/persistentvolumes/ocp401120
+    uid: 7ecbdfb7-0468-4798-9202-9144542b4981
+  spec:
+    accessModes: [ReadWriteMany]
+    capacity: {storage: 100Gi}
+    claimRef: {apiVersion: v1, kind: PersistentVolumeClaim, name: image-registry-storage,
+      namespace: openshift-image-registry, resourceVersion: '16017', uid: 7ae2209e-4248-42f8-8320-2d53b63ba1f8}
+    nfs: {path: /ocp_root/ocp401120, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Retain
+    storageClassName: infra
+    volumeMode: Filesystem
+  status: {phase: Bound}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T18:21:45Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401130
+    resourceVersion: '20650100'
+    selfLink: /api/v1/persistentvolumes/ocp401130
+    uid: 167e5cf8-0bd1-46bb-97f6-b2c0fe7d3788
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 5Gi}
+    nfs: {path: /ocp_root/ocp401130, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T16:34:11Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401131
+    resourceVersion: '20564641'
+    selfLink: /api/v1/persistentvolumes/ocp401131
+    uid: 00300b5d-6825-49d7-9925-aaf5c4dc9a49
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 5Gi}
+    nfs: {path: /ocp_root/ocp401131, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T18:21:45Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401132
+    resourceVersion: '20650105'
+    selfLink: /api/v1/persistentvolumes/ocp401132
+    uid: f31378bf-5d77-462d-a147-2893b63488dd
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 5Gi}
+    nfs: {path: /ocp_root/ocp401132, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T18:21:46Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401133
+    resourceVersion: '20650109'
+    selfLink: /api/v1/persistentvolumes/ocp401133
+    uid: 64105e79-8eb4-4064-9de8-914d5b35259a
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 5Gi}
+    nfs: {path: /ocp_root/ocp401133, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {pv.kubernetes.io/bound-by-controller: 'yes'}
+    creationTimestamp: '2020-05-11T16:34:11Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401134
+    resourceVersion: '22751377'
+    selfLink: /api/v1/persistentvolumes/ocp401134
+    uid: 730a1372-a038-44fc-8924-85eba0b5a885
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 5Gi}
+    nfs: {path: /ocp_root/ocp401134, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {pv.kubernetes.io/bound-by-controller: 'yes'}
+    creationTimestamp: '2020-05-11T16:34:12Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401135
+    resourceVersion: '21598949'
+    selfLink: /api/v1/persistentvolumes/ocp401135
+    uid: 827d0311-6f21-4679-afce-19ea62339454
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 5Gi}
+    claimRef: {apiVersion: v1, kind: PersistentVolumeClaim, name: jenkins, namespace: pipeline5,
+      resourceVersion: '21598946', uid: c4cb3ee5-545f-4b38-8895-56ff9003a751}
+    nfs: {path: /ocp_root/ocp401135, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Bound}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {pv.kubernetes.io/bound-by-controller: 'yes'}
+    creationTimestamp: '2020-05-11T16:34:12Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401136
+    resourceVersion: '20651258'
+    selfLink: /api/v1/persistentvolumes/ocp401136
+    uid: d346e8fc-c8ce-4243-89c7-95dcb27a352a
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 5Gi}
+    claimRef: {apiVersion: v1, kind: PersistentVolumeClaim, name: nexus-pv, namespace: pipeline2,
+      resourceVersion: '20651255', uid: 54d6f954-ab61-4598-8502-bffb08a2e6cd}
+    nfs: {path: /ocp_root/ocp401136, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Bound}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T16:34:12Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401137
+    resourceVersion: '20564670'
+    selfLink: /api/v1/persistentvolumes/ocp401137
+    uid: af182f62-aa06-41a6-a897-fad1b52c2593
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 5Gi}
+    nfs: {path: /ocp_root/ocp401137, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T16:34:12Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401138
+    resourceVersion: '20564674'
+    selfLink: /api/v1/persistentvolumes/ocp401138
+    uid: cedd4574-c71d-4fcd-821e-3b5045825c5b
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 5Gi}
+    nfs: {path: /ocp_root/ocp401138, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T16:34:12Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401139
+    resourceVersion: '20564677'
+    selfLink: /api/v1/persistentvolumes/ocp401139
+    uid: 4184d310-92ac-420c-8c42-ecaf76dd5847
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 5Gi}
+    nfs: {path: /ocp_root/ocp401139, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T16:34:13Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401140
+    resourceVersion: '20564684'
+    selfLink: /api/v1/persistentvolumes/ocp401140
+    uid: 3a334828-f56e-4fae-a5ac-f71dbf44f6c8
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 5Gi}
+    nfs: {path: /ocp_root/ocp401140, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T16:34:13Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401141
+    resourceVersion: '20564686'
+    selfLink: /api/v1/persistentvolumes/ocp401141
+    uid: 2439cebe-976a-4a0d-ab23-5bf06aa5d6ec
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 5Gi}
+    nfs: {path: /ocp_root/ocp401141, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T16:34:13Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401142
+    resourceVersion: '20564688'
+    selfLink: /api/v1/persistentvolumes/ocp401142
+    uid: 4571a64d-f46a-49d2-bd94-2d85cad7fecf
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 5Gi}
+    nfs: {path: /ocp_root/ocp401142, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T16:34:13Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401143
+    resourceVersion: '20564692'
+    selfLink: /api/v1/persistentvolumes/ocp401143
+    uid: 36482d5d-68ea-4e2c-af94-f94161340fd4
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 5Gi}
+    nfs: {path: /ocp_root/ocp401143, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {pv.kubernetes.io/bound-by-controller: 'yes'}
+    creationTimestamp: '2020-05-11T16:34:13Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401144
+    resourceVersion: '21546548'
+    selfLink: /api/v1/persistentvolumes/ocp401144
+    uid: 36850927-22a3-4cdf-b03a-5e8724c1193b
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 5Gi}
+    claimRef: {apiVersion: v1, kind: PersistentVolumeClaim, name: jenkins, namespace: pipeline4,
+      resourceVersion: '21546546', uid: 77bdf1f4-9dc0-45e3-806b-dc9ad0cc59db}
+    nfs: {path: /ocp_root/ocp401144, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Bound}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T16:34:13Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401145
+    resourceVersion: '20564703'
+    selfLink: /api/v1/persistentvolumes/ocp401145
+    uid: 18993a0f-3f6d-44df-960c-4d3a6247658a
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 5Gi}
+    nfs: {path: /ocp_root/ocp401145, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T16:34:14Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401146
+    resourceVersion: '20564708'
+    selfLink: /api/v1/persistentvolumes/ocp401146
+    uid: 8209ab66-0c76-4260-bb13-f9e258382f4a
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 5Gi}
+    nfs: {path: /ocp_root/ocp401146, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T16:34:14Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401147
+    resourceVersion: '20564714'
+    selfLink: /api/v1/persistentvolumes/ocp401147
+    uid: bfc1bc47-ef75-4a0d-974c-e82ad59cc63c
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 5Gi}
+    nfs: {path: /ocp_root/ocp401147, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T18:21:46Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401148
+    resourceVersion: '20650113'
+    selfLink: /api/v1/persistentvolumes/ocp401148
+    uid: 6d8c217a-75c4-4d2c-bf59-4b0b99639583
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 5Gi}
+    nfs: {path: /ocp_root/ocp401148, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T16:34:14Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401149
+    resourceVersion: '20564721'
+    selfLink: /api/v1/persistentvolumes/ocp401149
+    uid: 09ea70c6-edb5-4cdb-a382-219590d0af36
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 5Gi}
+    nfs: {path: /ocp_root/ocp401149, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {pv.kubernetes.io/bound-by-controller: 'yes'}
+    creationTimestamp: '2020-05-11T16:34:14Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401150
+    resourceVersion: '20638742'
+    selfLink: /api/v1/persistentvolumes/ocp401150
+    uid: 24b8374a-2fc6-4590-81fd-f4081c7d6249
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 5Gi}
+    claimRef: {apiVersion: v1, kind: PersistentVolumeClaim, name: nexus-pv, namespace: nixon7,
+      resourceVersion: '20638740', uid: 5ff604c8-479f-414d-a992-979a22b53b55}
+    nfs: {path: /ocp_root/ocp401150, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Bound}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T18:16:27Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401160
+    resourceVersion: '20645963'
+    selfLink: /api/v1/persistentvolumes/ocp401160
+    uid: 2039244f-585c-43f5-90d3-c157687e41b7
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 20Gi}
+    nfs: {path: /ocp_root/ocp401160, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {pv.kubernetes.io/bound-by-controller: 'yes'}
+    creationTimestamp: '2020-05-11T18:16:27Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401161
+    resourceVersion: '21598986'
+    selfLink: /api/v1/persistentvolumes/ocp401161
+    uid: 13759979-9071-4a03-a328-e4ff8189d4f1
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 20Gi}
+    claimRef: {apiVersion: v1, kind: PersistentVolumeClaim, name: nexus-pv, namespace: pipeline5,
+      resourceVersion: '21598983', uid: 6ee17a37-bf36-4b02-a113-a11024be7627}
+    nfs: {path: /ocp_root/ocp401161, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Bound}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T18:16:27Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401162
+    resourceVersion: '20645970'
+    selfLink: /api/v1/persistentvolumes/ocp401162
+    uid: cf5411b6-7f3d-4ff9-8080-59e56008b8fd
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 20Gi}
+    nfs: {path: /ocp_root/ocp401162, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T18:16:27Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401163
+    resourceVersion: '20645975'
+    selfLink: /api/v1/persistentvolumes/ocp401163
+    uid: 74b128c2-f317-47a0-ab99-af65610ac2e6
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 20Gi}
+    nfs: {path: /ocp_root/ocp401163, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T18:16:28Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401164
+    resourceVersion: '20645977'
+    selfLink: /api/v1/persistentvolumes/ocp401164
+    uid: c999852d-3f33-49cc-b974-4149689e3460
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 20Gi}
+    nfs: {path: /ocp_root/ocp401164, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations: {pv.kubernetes.io/bound-by-controller: 'yes'}
+    creationTimestamp: '2020-05-11T18:16:28Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401165
+    resourceVersion: '22751915'
+    selfLink: /api/v1/persistentvolumes/ocp401165
+    uid: 25c1a3b9-c2b2-49dc-8d8b-d28e09733bec
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 20Gi}
+    nfs: {path: /ocp_root/ocp401165, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T18:16:28Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401166
+    resourceVersion: '20645983'
+    selfLink: /api/v1/persistentvolumes/ocp401166
+    uid: e05b82fe-531f-48a3-af4b-30542e261cbe
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 20Gi}
+    nfs: {path: /ocp_root/ocp401166, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T18:16:28Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401167
+    resourceVersion: '20645988'
+    selfLink: /api/v1/persistentvolumes/ocp401167
+    uid: dc8a47ac-2b08-46a5-acff-90422b376789
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 20Gi}
+    nfs: {path: /ocp_root/ocp401167, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T18:16:28Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401168
+    resourceVersion: '20645991'
+    selfLink: /api/v1/persistentvolumes/ocp401168
+    uid: 15e9f5b7-c2f1-4cb8-aa37-18f2264bc71f
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 20Gi}
+    nfs: {path: /ocp_root/ocp401168, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T18:16:28Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401169
+    resourceVersion: '20645996'
+    selfLink: /api/v1/persistentvolumes/ocp401169
+    uid: 6bffdb27-63a7-4ec3-8491-22a3431f96f4
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 20Gi}
+    nfs: {path: /ocp_root/ocp401169, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    creationTimestamp: '2020-05-11T18:16:29Z'
+    finalizers: [kubernetes.io/pv-protection]
+    name: ocp401170
+    resourceVersion: '20646001'
+    selfLink: /api/v1/persistentvolumes/ocp401170
+    uid: dcba2986-0c5a-42a4-afda-764f09db3717
+  spec:
+    accessModes: [ReadWriteOnce]
+    capacity: {storage: 20Gi}
+    nfs: {path: /ocp_root/ocp401170, server: nfsexport01.ti.com}
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: thin
+    volumeMode: Filesystem
+  status: {phase: Available}

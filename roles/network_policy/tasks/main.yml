@@ -1,0 +1,108 @@
+---
+- name: Determine endpoint publishing strategy
+  k8s_info:
+    kind: IngressController
+    name: default
+    namespace: openshift-ingress-operator
+  register: def_ingress_ctlr
+
+- name: show publishing strategy
+  debug:
+    msg: " publishing strategy = {{  def_ingress_ctlr.resources[0].status.endpointPublishingStrategy.type }}"
+
+- name: Label
+  k8s:
+    state: present
+    api_version: v1
+    name: default
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      name: default
+      metadata:
+        labels:
+          network.openshift.io/policy-group: "ingress"
+  when: def_ingress_ctlr.resources[0].status.endpointPublishingStrategy.type == 'HostNetwork'
+
+- name:
+  k8s:
+    state: present
+    definition:
+       apiVersion: template.openshift.io/v1
+       kind: Template
+       metadata:
+         name: project-request
+         namespace: openshift-config
+       objects:
+       - apiVersion: networking.k8s.io/v1
+         kind: NetworkPolicy
+         metadata:
+           name: deny-by-default
+         spec:
+           ingress: []
+           podSelector: null
+       - apiVersion: networking.k8s.io/v1
+         kind: NetworkPolicy
+         metadata:
+           name: allow-from-same-namespace
+         spec:
+           ingress:
+           - from:
+             - podSelector: {}
+           podSelector: null
+       - apiVersion: networking.k8s.io/v1
+         kind: NetworkPolicy
+         metadata:
+           name: allow-from-openshift-ingress
+         spec:
+           ingress:
+           - from:
+             - namespaceSelector:
+                 matchLabels:
+                   network.openshift.io/policy-group: ingress
+           podSelector: {}
+           policyTypes:
+           - Ingress
+       - apiVersion: project.openshift.io/v1
+         kind: Project
+         metadata:
+           annotations:
+             openshift.io/description: ${PROJECT_DESCRIPTION}
+             openshift.io/display-name: ${PROJECT_DISPLAYNAME}
+             openshift.io/requester: ${PROJECT_REQUESTING_USER}
+           creationTimestamp: null
+           name: ${PROJECT_NAME}
+         spec: {}
+         status: {}
+       - apiVersion: rbac.authorization.k8s.io/v1
+         kind: RoleBinding
+         metadata:
+           creationTimestamp: null
+           name: admin
+           namespace: ${PROJECT_NAME}
+         roleRef:
+           apiGroup: rbac.authorization.k8s.io
+           kind: ClusterRole
+           name: admin
+         subjects:
+         - apiGroup: rbac.authorization.k8s.io
+           kind: User
+           name: ${PROJECT_ADMIN_USER}
+       parameters:
+       - name: PROJECT_NAME
+       - name: PROJECT_DISPLAYNAME
+       - name: PROJECT_DESCRIPTION
+       - name: PROJECT_ADMIN_USER
+       - name: PROJECT_REQUESTING_USER
+
+- name:
+  k8s:
+    state: present
+    definition:
+      apiVersion: config.openshift.io/v1
+      kind: Project
+      metadata:
+        name: cluster
+      spec:
+        projectRequestTemplate:
+          name: project-request 

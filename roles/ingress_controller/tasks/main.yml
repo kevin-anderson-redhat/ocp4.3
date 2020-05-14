@@ -1,0 +1,21 @@
+  - name: Ingress Controller infrastructure node selector and taint toleration
+    k8s:
+      state: present
+      definition:
+        kind: IngressController
+        metadata:
+          name: default
+          namespace: openshift-ingress-operator
+        spec:
+          nodePlacement:
+            nodeSelector:
+              matchLabels:
+                node-role.kubernetes.io/infra: ""
+            tolerations:
+              - effect: NoSchedule
+                key: infra
+                value: reserved
+              - effect: NoExecute
+                key: infra
+                value: reserved
+          replicas: 3
