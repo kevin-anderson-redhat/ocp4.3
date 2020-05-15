@@ -1,0 +1,150 @@
+- name: Create a timestamp without fact gathering
+  set_fact:
+     test_timestamp: "{{ lookup('pipe',\"date '+%s'\") }}"
+
+- name: Create project_names
+  set_fact:
+     project_names:
+       - "tnpa-{{ test_timestamp }}"
+       - "tnpb-{{ test_timestamp }}"
+
+- name: "Create projects"
+  command:
+    argv:
+      - /usr/local/bin/oc
+      - new-project
+      - "{{ item }}" 
+  loop: "{{ project_names }}"
+  loop_control:
+    extended: yes
+    label: "{{ item }}"
+  register: new_projects
+
+- name: show new proj
+  debug:
+    var: new_projects
+  tags: [ never, debug ]
+
+- name: Get policies for each project
+  k8s_info:
+    api_version: networking.k8s.io/v1
+    kind: NetworkPolicy
+    namespace: "{{ item }}"
+  loop: "{{ project_names }}"
+  loop_control:
+    extended: yes
+    label: "{{ item }}"
+  register: network_policies
+
+- name: show network_policies
+  debug:
+    var: network_policies
+  tags: [ never, debug ]
+
+- name: Set policy count
+  set_fact:
+     network_policy_count_a: "{{ network_policies.results[0].resources | length }}"
+     network_policy_count_b: "{{ network_policies.results[1].resources | length }}"
+
+- debug:
+    msg: "{{ network_policy_count_a }}   {{network_policy_count_b }}"
+  tags: [ never, debug ]
+
+- name: Three network policies should exist for each new project
+  assert:
+    that:
+      - network_policy_count_a == "3"
+      - network_policy_count_b == "3"
+    fail_msg: "Did not find 3 network policies in the new projects"
+    success_msg: "Found 3 network policies in the new projects"
+
+#
+# Remove network policies from first project
+#
+- name: Remove deny-by-default network policy from first project
+  k8s:
+    state: absent
+    name: deny-by-default
+    namespace: "{{ project_names[0] }}"
+    kind: NetworkPolicy
+    api_version: networking.k8s.io/v1
+
+- name: Remove allow-from-same-namepsace network policy from first project
+  k8s:
+    state: absent
+    name: allow-from-same-namespace
+    namespace: "{{ project_names[0] }}"
+    kind: NetworkPolicy
+    api_version: networking.k8s.io/v1
+
+- name: Remove allow-from-openshift-ingress network policy from first project
+  k8s:
+    state: absent
+    name: allow-from-openshift-ingress
+    namespace: "{{ project_names[0] }}"
+    kind: NetworkPolicy
+    api_version: networking.k8s.io/v1
+#
+# Spin Up pods in project a
+#
+- name: "Create httpd-example in first project"
+  command:
+    argv:
+      - /usr/local/bin/oc
+      - new-app
+      - httpd-example
+      - "-n"
+      - "{{ project_names[0] }}"
+
+- name: Search for running httpd-example
+  k8s_info:
+    kind: Pod
+    namespace: "{{ project_names[0] }}"
+    label_selectors:
+      - name=httpd-example
+    field_selectors:
+      - status.phase=Running
+  register: a_httpd
+  until: a_httpd.resources != [] 
+  delay: 10
+  retries: 10
+
+- pause:
+    seconds: 5
+
+- name: "Create nodejs-ex in first project"
+  command:
+    argv:
+      - /usr/local/bin/oc
+      - new-app
+      - https://github.com/sclorg/nodejs-ex.git
+      - "-n"
+      - "{{ project_names[0] }}"
+
+- name: Search for running httpd-example
+  k8s_info:
+    kind: Pod
+    namespace: "{{ project_names[0] }}"
+    label_selectors:
+      - deploymentconfig=nodejs-ex
+    field_selectors:
+      - status.phase=Running
+  register: a_nodejs
+  until: a_nodejs.resources != []
+  delay: 10
+  retries: 10
+
+#
+# Cleanup
+#
+- name: "Delete the projects"
+  command: 
+    argv:
+      - /usr/local/bin/oc
+      - delete
+      - project
+      - "{{ item }}" 
+  loop: "{{ project_names }}"
+  loop_control:
+    extended: yes
+    label: "{{ item }}"

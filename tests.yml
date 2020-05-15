@@ -1,0 +1,11 @@
+---
+- name: Cluster Automation configuration tests
+  gather_facts: no
+  hosts: localhost
+  become: false
+
+  tasks:
+  - name: Network Policy Tests
+    import_tasks: ./roles/network_policy/tests/new_project_defaults.yml
+    tags: [ network_policy ]
+
