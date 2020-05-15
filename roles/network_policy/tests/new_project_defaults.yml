@@ -96,7 +96,7 @@
       - "-n"
       - "{{ project_names[0] }}"
 
-- name: Search for running httpd-example
+- name: Search for running httpd-example in first project
   k8s_info:
     kind: Pod
     namespace: "{{ project_names[0] }}"
@@ -107,7 +107,12 @@
   register: a_httpd
   until: a_httpd.resources != [] 
   delay: 10
-  retries: 10
+  retries: 15
+
+- name: save first project httpd-example
+  copy:
+    content: "{{ a_httpd }}"
+    dest: ./a_httpd.yml
 
 - pause:
     seconds: 5
@@ -121,7 +126,7 @@
       - "-n"
       - "{{ project_names[0] }}"
 
-- name: Search for running httpd-example
+- name: Search for running node-js in first project
   k8s_info:
     kind: Pod
     namespace: "{{ project_names[0] }}"
@@ -132,7 +137,105 @@
   register: a_nodejs
   until: a_nodejs.resources != []
   delay: 10
-  retries: 10
+  retries: 15
+
+- name: save first project node-js
+  copy:
+    content: "{{ a_nodejs }}"
+    dest: ./a_nodejs.yml
+
+- pause:
+    seconds: 5
+
+#
+# Spin Up pods in project b
+#
+- name: "Create httpd-example in second project"
+  command:
+    argv:
+      - /usr/local/bin/oc
+      - new-app
+      - httpd-example
+      - "-n"
+      - "{{ project_names[1] }}"
+
+- name: Search for running httpd-example in second project
+  k8s_info:
+    kind: Pod
+    namespace: "{{ project_names[1] }}"
+    label_selectors:
+      - name=httpd-example
+    field_selectors:
+      - status.phase=Running
+  register: b_httpd
+  until: b_httpd.resources != [] 
+  delay: 10
+  retries: 15
+
+- name: save second project httpd-example
+  copy:
+    content: "{{ b_httpd }}"
+    dest: ./b_httpd.yml
+
+- pause:
+    seconds: 5
+
+- name: "Create nodejs-ex in second project"
+  command:
+    argv:
+      - /usr/local/bin/oc
+      - new-app
+      - https://github.com/sclorg/nodejs-ex.git
+      - "-n"
+      - "{{ project_names[1] }}"
+
+- name: Search for running node-js in second project
+  k8s_info:
+    kind: Pod
+    namespace: "{{ project_names[1] }}"
+    label_selectors:
+      - deploymentconfig=nodejs-ex
+    field_selectors:
+      - status.phase=Running
+  register: b_nodejs
+  until: b_nodejs.resources != []
+  delay: 10
+  retries: 15
+
+- name: save second project httpd-example
+  copy:
+    content: "{{ b_nodejs }}"
+    dest: ./b_nodejs.yml
+
+- pause:
+    seconds: 5
+#
+# Prove that two pods in the first project can talk to each other
+#    This shows that without NetworkPolicy objects, pods in the 
+#    same project can communicate with each other
+#
+
+# Prove that two pods in the second project can talk to each other
+#    This shows that with NetworkPolicy objects, pods in the 
+#    same project can still communicate with each other
+#
+
+#
+# Prove that a pod in the second project can reach a pod in the first project
+#    This shows that the first project without NetworkPolicy objects allows communications
+#    from other namespaces
+
+#
+# Prove that a pod in the first project can not reach a pod in the second project
+#    This shows that the NetworkPolicy objects in the second project prevent
+#    connections from other namespaces
+#
+
+
+#
+# Prove that a pod in the second project can reach a pod in the first project
+#
+
 
 #
 # Cleanup
