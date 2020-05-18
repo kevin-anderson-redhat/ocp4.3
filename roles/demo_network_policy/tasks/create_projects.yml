@@ -1,0 +1,37 @@
+#
+# Create a timestamp that will be used to create unique
+# project names
+#
+- name: Create a timestamp without fact gathering
+  set_fact:
+     demo_timestamp: "{{ lookup('pipe',\"date '+%s'\") }}"
+
+- name: Create project_names
+  set_fact:
+     project_names:
+       - "{{project_name_prefix}}a-{{ demo_timestamp }}"
+       - "{{project_name_prefix}}b-{{ demo_timestamp }}"
+
+#
+# Create 2 projects 
+#
+- name: "Create projects"
+  command:
+    argv:
+      - /usr/local/bin/oc
+      - new-project
+      - "{{ item }}" 
+  loop: "{{ project_names }}"
+  loop_control:
+    extended: yes
+    label: "{{ item }}"
+  changed_when: True
+  register: new_projects
+  notify:
+    - "Delete the projects"
+
+- name: show new proj
+  debug:
+    var: new_projects
+  tags: [ never, debug ]
+

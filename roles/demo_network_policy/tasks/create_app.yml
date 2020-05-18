@@ -1,0 +1,53 @@
+- name: "Create app {{ app_name }} in {{ project_namespace }}"
+  command:
+    argv:
+      - /usr/local/bin/oc
+      - new-app
+      - "{{ create_name }}"
+      - "-p"
+      - "NAME={{ app_name }}"
+      - "-n"
+      - "{{ project_namespace }}"
+
+- name: "Search for running {{ app_name }} in {{ project_namespace }}"
+  k8s_info:
+    kind: Pod
+    namespace: "{{ project_namespace }}"
+    label_selectors:
+      - "{{ label_selector }}"
+    field_selectors:
+      - "{{ field_selector }}"
+  register: tmp_pod
+  until: tmp_pod.resources != [] 
+  delay: 10
+  retries: 15
+
+
+- name: "Save {{ factname_pod }}"
+  copy:
+    content: "{{ tmp_pod | to_yaml }}"
+    dest: "./{{ factname_pod }}.yml"
+
+- name: "Get service {{ factname_svc }}"
+  k8s_info:
+    kind: Service
+    api_version: v1
+    name: "{{ app_name }}"
+    namespace: "{{ project_namespace }}"
+  register: tmp_svc
+
+- name: "Save service {{ factname_svc }}"
+  copy:
+    content: "{{ tmp_svc | to_yaml }}"
+    dest: "./{{ factname_svc }}.yml"
+
+- name: "Show service {{factname_svc }}"
+  debug:
+    msg: "http://{{ tmp_svc.resources[0].spec.clusterIP }}:{{ tmp_svc.resources[0].spec.ports[0].port }}"
+  tags: [ never, debug ]
+
+- name: "Create fact"
+  set_fact:
+    "{{ factname_pod }}": "{{ tmp_pod }}"
+    "{{ factname_svc }}": "{{ tmp_svc }}"
+

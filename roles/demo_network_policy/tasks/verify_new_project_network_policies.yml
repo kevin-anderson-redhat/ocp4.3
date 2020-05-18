@@ -1,0 +1,39 @@
+#
+# Demonstrate that the new projects have been
+# assigned 3 network policies.
+# The prove that the default project template has been
+# correctly updated to include the network policies
+#
+- name: Get policies for each project
+  k8s_info:
+    api_version: networking.k8s.io/v1
+    kind: NetworkPolicy
+    namespace: "{{ item }}"
+  loop: "{{ project_names }}"
+  loop_control:
+    extended: yes
+    label: "{{ item }}"
+  register: network_policies
+
+- name: show network_policies
+  debug:
+    var: network_policies
+  tags: [ never, debug ]
+
+- name: Set policy count fact
+  set_fact:
+     network_policy_count_a: "{{ network_policies.results[0].resources | length }}"
+     network_policy_count_b: "{{ network_policies.results[1].resources | length }}"
+
+- debug:
+    msg: "{{ network_policy_count_a }}   {{network_policy_count_b }}"
+  tags: [ never, debug ]
+
+- name: Verify that 3 network policies exist for the new projects
+  assert:
+    that:
+      - network_policy_count_a == "3"
+      - network_policy_count_b == "3"
+    fail_msg: "Did not find 3 network policies in the new projects"
+    success_msg: "Found 3 network policies in the new projects"
+

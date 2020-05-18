@@ -1,0 +1,15 @@
+#
+# Cleanup
+#    This will be skipped when "--skip-tags always" is used
+#
+- name: "Delete the projects"
+  command: 
+    argv:
+      - /usr/local/bin/oc
+      - delete
+      - project
+      - "{{ item }}" 
+  loop: "{{ project_names }}"
+  loop_control:
+    extended: yes
+    label: "{{ item }}"

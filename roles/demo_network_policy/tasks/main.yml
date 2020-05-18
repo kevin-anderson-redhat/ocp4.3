@@ -1,0 +1,181 @@
+- import_tasks: create_projects.yml
+  vars:
+    project_name_prefix: "dnp"
+    # Creates fact: project_names
+
+- import_tasks: verify_new_project_network_policies.yml
+    # Creates fact: network_policy_names
+
+- import_tasks: remove_first_project_network_policies.yml
+
+#
+# Create apps in first project (prj_a)
+#
+- import_tasks: create_app.yml
+  vars:
+    project_namespace: "{{ project_names[0] }}"
+    app_name: "ex1"
+    create_name: "httpd-example"
+    label_selector: "name=ex1"
+    field_selector: "status.phase=Running"
+    factname_pod: "prj_a_pod_ex1"
+    factname_svc: "prj_a_svc_ex1"
+
+- pause:
+    seconds: 15
+
+- import_tasks: create_app.yml
+  vars:
+    project_namespace: "{{ project_names[0] }}"
+    app_name: "ex2"
+    create_name: "httpd-example"
+    label_selector: "name=ex2"
+    field_selector: "status.phase=Running"
+    factname_pod: "prj_a_pod_ex2"
+    factname_svc: "prj_a_svc_ex2"
+
+- pause:
+    seconds: 15
+
+#
+# Create apps in second project (prj_b)
+#
+- import_tasks: create_app.yml
+  vars:
+    project_namespace: "{{ project_names[1] }}"
+    app_name: "ex1"
+    create_name: "httpd-example"
+    label_selector: "name=ex1"
+    field_selector: "status.phase=Running"
+    factname_pod: "prj_b_pod_ex1"
+    factname_svc: "prj_b_svc_ex1"
+
+- pause:
+    seconds: 15
+
+- import_tasks: create_app.yml
+  vars:
+    project_namespace: "{{ project_names[1] }}"
+    app_name: "ex2"
+    create_name: "httpd-example"
+    label_selector: "name=ex2"
+    field_selector: "status.phase=Running"
+    factname_pod: "prj_b_pod_ex2"
+    factname_svc: "prj_b_svc_ex2"
+
+
+- pause:
+    seconds: 15
+
+#
+# Prove in the first project that httpd pod can talk to the php pod
+# and vice versa
+#
+- import_tasks: curl_from_pod.yml
+  vars:
+    pod_name: "{{ prj_a_pod_ex1.resources[0].metadata.name }}"
+    project_namespace: "{{ prj_a_pod_ex1.resources[0].metadata.namespace }}"
+    curl_url: "http://{{ prj_a_svc_ex2.resources[0].spec.clusterIP }}:{{ prj_a_svc_ex2.resources[0].spec.ports[0].port }}"
+    factname_curl_result: "prj_a_ex12php"
+    expected_rc: 0
+
+- import_tasks: curl_from_pod.yml
+  vars:
+    pod_name: "{{ prj_a_pod_ex2.resources[0].metadata.name }}"
+    project_namespace: "{{ prj_a_pod_ex2.resources[0].metadata.namespace }}"
+    curl_url: "http://{{ prj_a_svc_ex1.resources[0].spec.clusterIP }}:{{ prj_a_svc_ex1.resources[0].spec.ports[0].port }}"
+    factname_curl_result: "prj_a_ex22httpd"
+    expected_rc: 0
+
+#
+# Prove in the second project that httpd pod can talk to the php pod
+# and vice versa
+#
+- import_tasks: curl_from_pod.yml
+  vars:
+    pod_name: "{{ prj_b_pod_ex1.resources[0].metadata.name }}"
+    project_namespace: "{{ prj_b_pod_ex1.resources[0].metadata.namespace }}"
+    curl_url: "http://{{ prj_b_svc_ex2.resources[0].spec.clusterIP }}:{{ prj_b_svc_ex2.resources[0].spec.ports[0].port }}"
+    factname_curl_result: "prj_b_ex12php"
+    expected_rc: 0
+
+- import_tasks: curl_from_pod.yml
+  vars:
+    pod_name: "{{ prj_b_pod_ex2.resources[0].metadata.name }}"
+    project_namespace: "{{ prj_b_pod_ex2.resources[0].metadata.namespace }}"
+    curl_url: "http://{{ prj_b_svc_ex1.resources[0].spec.clusterIP }}:{{ prj_b_svc_ex1.resources[0].spec.ports[0].port }}"
+    factname_curl_result: "prj_b_ex22httpd"
+    expected_rc: 0
+
+#
+# Prove that both pods in the first project cannot talk to both pods in the second project
+# because the second project still has the networkpolicies in place to prevent this.
+#
+- import_tasks: curl_from_pod.yml
+  vars:
+    pod_name: "{{ prj_a_pod_ex1.resources[0].metadata.name }}"
+    project_namespace: "{{ prj_a_pod_ex1.resources[0].metadata.namespace }}"
+    curl_url: "http://{{ prj_b_svc_ex1.resources[0].spec.clusterIP }}:{{ prj_b_svc_ex1.resources[0].spec.ports[0].port }}"
+    factname_curl_result: "prj_a_http_2_b_http"
+    expected_rc: 28
+
+- import_tasks: curl_from_pod.yml
+  vars:
+    pod_name: "{{ prj_a_pod_ex1.resources[0].metadata.name }}"
+    project_namespace: "{{ prj_a_pod_ex1.resources[0].metadata.namespace }}"
+    curl_url: "http://{{ prj_b_svc_ex2.resources[0].spec.clusterIP }}:{{ prj_b_svc_ex2.resources[0].spec.ports[0].port }}"
+    factname_curl_result: "prj_a_http_2_b_ex2"
+    expected_rc: 28
+
+- import_tasks: curl_from_pod.yml
+  vars:
+    pod_name: "{{ prj_a_pod_ex2.resources[0].metadata.name }}"
+    project_namespace: "{{ prj_a_pod_ex2.resources[0].metadata.namespace }}"
+    curl_url: "http://{{ prj_b_svc_ex1.resources[0].spec.clusterIP }}:{{ prj_b_svc_ex1.resources[0].spec.ports[0].port }}"
+    factname_curl_result: "prj_a_ex2_2_b_ex1"
+    expected_rc: 28
+
+- import_tasks: curl_from_pod.yml
+  vars:
+    pod_name: "{{ prj_a_pod_ex1.resources[0].metadata.name }}"
+    project_namespace: "{{ prj_a_pod_ex1.resources[0].metadata.namespace }}"
+    curl_url: "http://{{ prj_b_svc_ex2.resources[0].spec.clusterIP }}:{{ prj_b_svc_ex2.resources[0].spec.ports[0].port }}"
+    factname_curl_result: "prj_a_ex2_2_b_ex2"
+    expected_rc: 28
+
+#
+# Prove that both pods in the second project can talk to both pods in the first project
+# because the first project does not have the networkpolicies in place to prevent this.
+#
+- import_tasks: curl_from_pod.yml
+  vars:
+    pod_name: "{{ prj_b_pod_ex1.resources[0].metadata.name }}"
+    project_namespace: "{{ prj_b_pod_ex1.resources[0].metadata.namespace }}"
+    curl_url: "http://{{ prj_a_svc_ex1.resources[0].spec.clusterIP }}:{{ prj_a_svc_ex1.resources[0].spec.ports[0].port }}"
+    factname_curl_result: "prj_b_http_2_a_http"
+    expected_rc: 0
+
+- import_tasks: curl_from_pod.yml
+  vars:
+    pod_name: "{{ prj_b_pod_ex1.resources[0].metadata.name }}"
+    project_namespace: "{{ prj_b_pod_ex1.resources[0].metadata.namespace }}"
+    curl_url: "http://{{ prj_a_svc_ex2.resources[0].spec.clusterIP }}:{{ prj_a_svc_ex2.resources[0].spec.ports[0].port }}"
+    factname_curl_result: "prj_b_http_2_a_ex2"
+    expected_rc: 0
+
+- import_tasks: curl_from_pod.yml
+  vars:
+    pod_name: "{{ prj_b_pod_ex2.resources[0].metadata.name }}"
+    project_namespace: "{{ prj_b_pod_ex2.resources[0].metadata.namespace }}"
+    curl_url: "http://{{ prj_a_svc_ex1.resources[0].spec.clusterIP }}:{{ prj_a_svc_ex1.resources[0].spec.ports[0].port }}"
+    factname_curl_result: "prj_b_ex2_2_a_ex1"
+    expected_rc: 0
+
+- import_tasks: curl_from_pod.yml
+  vars:
+    pod_name: "{{ prj_a_pod_ex2.resources[0].metadata.name }}"
+    project_namespace: "{{ prj_a_pod_ex2.resources[0].metadata.namespace }}"
+    curl_url: "http://{{ prj_a_svc_ex2.resources[0].spec.clusterIP }}:{{ prj_a_svc_ex2.resources[0].spec.ports[0].port }}"
+    factname_curl_result: "prj_b_ex2_2_a_ex2"
+    expected_rc: 0
+

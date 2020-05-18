@@ -1,0 +1,15 @@
+#
+# Remove network policies from first project
+#
+- name: Remove network policies from first project
+  k8s:
+    state: absent
+    name: "{{ item }}"
+    namespace: "{{ project_names[0] }}"
+    kind: NetworkPolicy
+    api_version: networking.k8s.io/v1
+  loop: "{{ network_policy_names }}"
+  loop_control:
+    extended: yes
+    label: "{{ item }}"
+

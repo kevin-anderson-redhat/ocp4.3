@@ -1,0 +1,10 @@
+---
+- name: Cluster Automation configuration tests
+  gather_facts: no
+  hosts: localhost
+  become: false
+  force_handlers: true
+
+  roles:
+  - demo_network_policy
+
