@@ -2,9 +2,23 @@
 # Create a timestamp that will be used to create unique
 # project names
 #
-- name: Create a timestamp without fact gathering
+#
+# Create project names
+#
+- name: Create data save directory
+  file:
+    path: "./host_vars/localhost/"
+    state: directory
+
+- name: Create timestamp
   set_fact:
-     demo_timestamp: "{{ lookup('pipe',\"date '+%s'\") }}"
+    demo_timestamp: "{{ lookup('pipe',\"date '+%s'\") }}"
+  when: demo_timestamp is not defined
+
+- name: Save demo_timestamp
+  copy:
+    dest: "./host_vars/localhost/demo_timestamp.yml"
+    content: "demo_timestamp: {{ demo_timestamp | to_yaml }}\n"
 
 - name: Create project_names
   set_fact:
@@ -21,17 +35,21 @@
       - /usr/local/bin/oc
       - new-project
       - "{{ item }}" 
+    creates:  "./host_vars/localhost/project_names.yml"
   loop: "{{ project_names }}"
   loop_control:
     extended: yes
     label: "{{ item }}"
   changed_when: True
   register: new_projects
-  notify:
-    - "Delete the projects"
+
+- name: Save project names
+  copy:
+    dest: "./host_vars/localhost/project_names.yml"
+    content: "project_names: {{ project_names | to_yaml }}\n"
 
 - name: show new proj
   debug:
     var: new_projects
+  when: new_projects is defined
   tags: [ never, debug ]
-

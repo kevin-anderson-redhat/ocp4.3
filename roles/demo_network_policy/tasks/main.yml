@@ -3,11 +3,6 @@
     project_name_prefix: "dnp"
     # Creates fact: project_names
 
-- import_tasks: verify_new_project_network_policies.yml
-    # Creates fact: network_policy_names
-
-- import_tasks: remove_first_project_network_policies.yml
-
 #
 # Create apps in first project (prj_a)
 #
@@ -21,9 +16,6 @@
     factname_pod: "prj_a_pod_ex1"
     factname_svc: "prj_a_svc_ex1"
 
-- pause:
-    seconds: 15
-
 - import_tasks: create_app.yml
   vars:
     project_namespace: "{{ project_names[0] }}"
@@ -33,9 +25,6 @@
     field_selector: "status.phase=Running"
     factname_pod: "prj_a_pod_ex2"
     factname_svc: "prj_a_svc_ex2"
-
-- pause:
-    seconds: 15
 
 #
 # Create apps in second project (prj_b)
@@ -50,9 +39,6 @@
     factname_pod: "prj_b_pod_ex1"
     factname_svc: "prj_b_svc_ex1"
 
-- pause:
-    seconds: 15
-
 - import_tasks: create_app.yml
   vars:
     project_namespace: "{{ project_names[1] }}"
@@ -63,16 +49,21 @@
     factname_pod: "prj_b_pod_ex2"
     factname_svc: "prj_b_svc_ex2"
 
+#
+# Start of verification
+#
+- import_tasks: verify_new_project_network_policies.yml
+    # Creates fact: network_policy_names
 
-- pause:
-    seconds: 15
+- import_tasks: remove_first_project_network_policies.yml
 
 #
-# Prove in the first project that httpd pod can talk to the php pod
+# Prove in the first project that ex1 an talk to ex2
 # and vice versa
 #
 - import_tasks: curl_from_pod.yml
   vars:
+    testcase_desc: "Proving prj_a ex1 can curl proj_a ex2"
     pod_name: "{{ prj_a_pod_ex1.resources[0].metadata.name }}"
     project_namespace: "{{ prj_a_pod_ex1.resources[0].metadata.namespace }}"
     curl_url: "http://{{ prj_a_svc_ex2.resources[0].spec.clusterIP }}:{{ prj_a_svc_ex2.resources[0].spec.ports[0].port }}"
@@ -81,6 +72,7 @@
 
 - import_tasks: curl_from_pod.yml
   vars:
+    testcase_desc: "Proving prj_a ex2 can curl proj_a ex1"
     pod_name: "{{ prj_a_pod_ex2.resources[0].metadata.name }}"
     project_namespace: "{{ prj_a_pod_ex2.resources[0].metadata.namespace }}"
     curl_url: "http://{{ prj_a_svc_ex1.resources[0].spec.clusterIP }}:{{ prj_a_svc_ex1.resources[0].spec.ports[0].port }}"
@@ -93,6 +85,7 @@
 #
 - import_tasks: curl_from_pod.yml
   vars:
+    testcase_desc: "Proving prj_b ex1 can curl proj_b ex2"
     pod_name: "{{ prj_b_pod_ex1.resources[0].metadata.name }}"
     project_namespace: "{{ prj_b_pod_ex1.resources[0].metadata.namespace }}"
     curl_url: "http://{{ prj_b_svc_ex2.resources[0].spec.clusterIP }}:{{ prj_b_svc_ex2.resources[0].spec.ports[0].port }}"
@@ -101,6 +94,7 @@
 
 - import_tasks: curl_from_pod.yml
   vars:
+    testcase_desc: "Proving prj_b ex2 can curl proj_b ex1"
     pod_name: "{{ prj_b_pod_ex2.resources[0].metadata.name }}"
     project_namespace: "{{ prj_b_pod_ex2.resources[0].metadata.namespace }}"
     curl_url: "http://{{ prj_b_svc_ex1.resources[0].spec.clusterIP }}:{{ prj_b_svc_ex1.resources[0].spec.ports[0].port }}"
@@ -113,6 +107,7 @@
 #
 - import_tasks: curl_from_pod.yml
   vars:
+    testcase_desc: "Proving prj_a ex1 cannot curl proj_b ex1"
     pod_name: "{{ prj_a_pod_ex1.resources[0].metadata.name }}"
     project_namespace: "{{ prj_a_pod_ex1.resources[0].metadata.namespace }}"
     curl_url: "http://{{ prj_b_svc_ex1.resources[0].spec.clusterIP }}:{{ prj_b_svc_ex1.resources[0].spec.ports[0].port }}"
@@ -121,6 +116,7 @@
 
 - import_tasks: curl_from_pod.yml
   vars:
+    testcase_desc: "Proving prj_a ex1 cannot curl proj_b ex2"
     pod_name: "{{ prj_a_pod_ex1.resources[0].metadata.name }}"
     project_namespace: "{{ prj_a_pod_ex1.resources[0].metadata.namespace }}"
     curl_url: "http://{{ prj_b_svc_ex2.resources[0].spec.clusterIP }}:{{ prj_b_svc_ex2.resources[0].spec.ports[0].port }}"
@@ -129,6 +125,7 @@
 
 - import_tasks: curl_from_pod.yml
   vars:
+    testcase_desc: "Proving prj_a ex2 cannot curl proj_b ex1"
     pod_name: "{{ prj_a_pod_ex2.resources[0].metadata.name }}"
     project_namespace: "{{ prj_a_pod_ex2.resources[0].metadata.namespace }}"
     curl_url: "http://{{ prj_b_svc_ex1.resources[0].spec.clusterIP }}:{{ prj_b_svc_ex1.resources[0].spec.ports[0].port }}"
@@ -137,6 +134,7 @@
 
 - import_tasks: curl_from_pod.yml
   vars:
+    testcase_desc: "Proving prj_a ex1 cannot curl proj_b ex2"
     pod_name: "{{ prj_a_pod_ex1.resources[0].metadata.name }}"
     project_namespace: "{{ prj_a_pod_ex1.resources[0].metadata.namespace }}"
     curl_url: "http://{{ prj_b_svc_ex2.resources[0].spec.clusterIP }}:{{ prj_b_svc_ex2.resources[0].spec.ports[0].port }}"
@@ -149,6 +147,7 @@
 #
 - import_tasks: curl_from_pod.yml
   vars:
+    testcase_desc: "Proving prj_b ex1 can curl proj_a ex1"
     pod_name: "{{ prj_b_pod_ex1.resources[0].metadata.name }}"
     project_namespace: "{{ prj_b_pod_ex1.resources[0].metadata.namespace }}"
     curl_url: "http://{{ prj_a_svc_ex1.resources[0].spec.clusterIP }}:{{ prj_a_svc_ex1.resources[0].spec.ports[0].port }}"
@@ -157,6 +156,7 @@
 
 - import_tasks: curl_from_pod.yml
   vars:
+    testcase_desc: "Proving prj_b ex1 can curl proj_a ex2"
     pod_name: "{{ prj_b_pod_ex1.resources[0].metadata.name }}"
     project_namespace: "{{ prj_b_pod_ex1.resources[0].metadata.namespace }}"
     curl_url: "http://{{ prj_a_svc_ex2.resources[0].spec.clusterIP }}:{{ prj_a_svc_ex2.resources[0].spec.ports[0].port }}"
@@ -165,6 +165,7 @@
 
 - import_tasks: curl_from_pod.yml
   vars:
+    testcase_desc: "Proving prj_b ex2 can curl proj_a ex1"
     pod_name: "{{ prj_b_pod_ex2.resources[0].metadata.name }}"
     project_namespace: "{{ prj_b_pod_ex2.resources[0].metadata.namespace }}"
     curl_url: "http://{{ prj_a_svc_ex1.resources[0].spec.clusterIP }}:{{ prj_a_svc_ex1.resources[0].spec.ports[0].port }}"
@@ -173,9 +174,92 @@
 
 - import_tasks: curl_from_pod.yml
   vars:
+    testcase_desc: "Proving prj_b ex2 can curl proj_a ex2"
     pod_name: "{{ prj_a_pod_ex2.resources[0].metadata.name }}"
     project_namespace: "{{ prj_a_pod_ex2.resources[0].metadata.namespace }}"
     curl_url: "http://{{ prj_a_svc_ex2.resources[0].spec.clusterIP }}:{{ prj_a_svc_ex2.resources[0].spec.ports[0].port }}"
     factname_curl_result: "prj_b_ex2_2_a_ex2"
     expected_rc: 0
 
+#
+# Prove that both pods in the first project can be reached from outside the cluster
+#
+- name: "Get Routes for {{ project_names[0] }}"
+  k8s_info:
+    kind: Route
+    api_version: v1
+    namespace: "{{ project_names[0] }}"
+  register: prja_routes
+
+- name: save prja routes
+  copy:
+    dest: "./prja_routes.yml"
+    content: "{{ prja_routes | to_nice_yaml }}"
+
+- name: "first project accessible from outside cluster"
+  uri:
+    url: "http://{{ item.spec.host }}"
+    status_code: 200
+    return_content: yes
+  register: prja_curl
+  loop: "{{ prja_routes.resources }}"
+  loop_control:
+    extended: yes
+    label: "{{ item.spec.host }}"
+
+
+#
+# Prove that both pods in the second project can be reached from outside the cluster
+#
+- name: "Get Routes for {{ project_names[1] }}"
+  k8s_info:
+    kind: Route
+    api_version: v1
+    namespace: "{{ project_names[1] }}"
+  register: prjb_routes
+
+- name: "second project accessible from outside cluster"
+  uri:
+    url: "http://{{ item.spec.host }}"
+    status_code: 200
+    return_content: yes
+  register: prja_curl
+  loop: "{{ prjb_routes.resources }}"
+  loop_control:
+    extended: yes
+    label: "{{ item.spec.host }}"
+#
+# Cleanup
+#    This will be skipped when "--skip-tags always" is used
+#
+- name: "Cleanup files"
+  file:
+    state: absent
+    path: "{{ item }}"
+  loop:
+    - app_prj_a_pod_ex1.yml
+    - app_prj_a_pod_ex2.yml
+    - app_prj_b_pod_ex1.yml
+    - app_prj_b_pod_ex2.yml
+    - demo_timestamp.yml
+    - network_policies_verified.yml
+    - prj_a_svc_ex1.yml
+    - prj_a_svc_ex2.yml
+    - prj_b_svc_ex1.yml
+    - prj_b_svc_ex2.yml
+    - project_names.yml
+  loop_control:
+    extended: yes
+    label: "{{ item }}"
+
+- name: "Delete the projects"
+  command: 
+    argv:
+      - /usr/local/bin/oc
+      - delete
+      - project
+      - "{{ item }}" 
+  loop: "{{ project_names }}"
+  loop_control:
+    extended: yes
+    label: "{{ item }}"

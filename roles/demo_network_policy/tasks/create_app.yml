@@ -8,6 +8,12 @@
       - "NAME={{ app_name }}"
       - "-n"
       - "{{ project_namespace }}"
+    creates: "./host_vars/localhost/app_{{ factname_pod }}.yml"
+
+- name: "Creat app flag file ./host_vars/localhost/app_{{ factname_pod }}.yml"
+  copy:
+    dest: "./host_vars/localhost/app_{{ factname_pod }}.yml"
+    content: "app_{{ factname_pod}}: true"
 
 - name: "Search for running {{ app_name }} in {{ project_namespace }}"
   k8s_info:
@@ -22,11 +28,15 @@
   delay: 10
   retries: 15
 
-
 - name: "Save {{ factname_pod }}"
   copy:
     content: "{{ tmp_pod | to_yaml }}"
     dest: "./{{ factname_pod }}.yml"
+
+- name: "Create fact {{ factname_pod }}"
+  set_fact:
+    "{{ factname_pod }}": "{{ tmp_pod }}"
+    
 
 - name: "Get service {{ factname_svc }}"
   k8s_info:
@@ -39,15 +49,15 @@
 - name: "Save service {{ factname_svc }}"
   copy:
     content: "{{ tmp_svc | to_yaml }}"
-    dest: "./{{ factname_svc }}.yml"
+    dest: "./host_vars/localhost/{{ factname_svc }}.yml"
 
 - name: "Show service {{factname_svc }}"
   debug:
     msg: "http://{{ tmp_svc.resources[0].spec.clusterIP }}:{{ tmp_svc.resources[0].spec.ports[0].port }}"
   tags: [ never, debug ]
 
-- name: "Create fact"
+- name: "Create fact {{ factname_svc }}"
   set_fact:
-    "{{ factname_pod }}": "{{ tmp_pod }}"
     "{{ factname_svc }}": "{{ tmp_svc }}"
+
 

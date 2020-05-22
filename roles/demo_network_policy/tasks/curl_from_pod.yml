@@ -1,23 +1,25 @@
 ---
-- name: "rsh to {{ project_namespace }}/{{ pod_name}} then curl {{ curl_url }}"
-  command:
-    argv:
-      - /usr/local/bin/oc
-      - rsh
-      - "-n"
-      - "{{ project_namespace }}"
-      - "{{ pod_name }}"
-      - "curl"
-      - "--connect-timeout"
-      - "15"
-      - "{{ curl_url }}"
-  register: tmp_cmd
-  failed_when: tmp_cmd.rc != expected_rc
-
-- set_fact:
-    "{{ factname_curl_result }}": "{{ tmp_cmd }}"
-
-- name: "Save {{ factname_curl_result }}"
-  copy:
-    content: "{{ tmp_cmd | to_yaml }}"
-    dest: "./{{ factname_curl_result }}.yml"
+- name: "{{ testcase_desc }}"
+  block:
+  - name: "rsh to {{ project_namespace }}/{{ pod_name}} then curl {{ curl_url }}"
+    command:
+      argv:
+        - /usr/local/bin/oc
+        - rsh
+        - "-n"
+        - "{{ project_namespace }}"
+        - "{{ pod_name }}"
+        - "curl"
+        - "--connect-timeout"
+        - "15"
+        - "{{ curl_url }}"
+    register: tmp_cmd
+    failed_when: tmp_cmd.rc != expected_rc
+  
+  - set_fact:
+      "{{ factname_curl_result }}": "{{ tmp_cmd }}"
+  
+  - name: "Save {{ factname_curl_result }}"
+    copy:
+      content: "{{ tmp_cmd | to_yaml }}"
+      dest: "./{{ factname_curl_result }}.yml"

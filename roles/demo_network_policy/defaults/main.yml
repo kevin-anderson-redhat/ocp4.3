@@ -1,5 +1,7 @@
 ---
+
 network_policy_names:
   - deny-by-default
   - allow-from-same-namespace
   - allow-from-openshift-ingress
+

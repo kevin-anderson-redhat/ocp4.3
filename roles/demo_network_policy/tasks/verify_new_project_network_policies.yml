@@ -4,6 +4,14 @@
 # The prove that the default project template has been
 # correctly updated to include the network policies
 #
+- name: show project names
+  debug:
+    msg: "{{ item }}"
+  loop: "{{ project_names }}"
+  loop_control:
+    extended: yes
+    label: "{{ item }}"
+
 - name: Get policies for each project
   k8s_info:
     api_version: networking.k8s.io/v1
@@ -20,7 +28,12 @@
     var: network_policies
   tags: [ never, debug ]
 
-- name: Set policy count fact
+- name: show network_policies
+  copy:
+    dest: "./network_policies.yml"
+    content: "{{ network_policies | to_nice_yaml }}"
+
+- name: "Set Count Fact a={{ network_policies.results[0].resources | length }} b={{ network_policies.results[1].resources | length }}"
   set_fact:
      network_policy_count_a: "{{ network_policies.results[0].resources | length }}"
      network_policy_count_b: "{{ network_policies.results[1].resources | length }}"
@@ -36,4 +49,11 @@
       - network_policy_count_b == "3"
     fail_msg: "Did not find 3 network policies in the new projects"
     success_msg: "Found 3 network policies in the new projects"
+  when: network_policies_verified is not defined
+
+
+- name: Set network_policies_verified
+  copy:
+    dest: './host_vars/localhost/network_policies_verified.yml'
+    content: 'network_policies_verified: true\n'
 
