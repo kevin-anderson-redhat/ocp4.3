@@ -17,27 +17,3 @@ all:
           tiaworker105.ocp401.ti.com:
   vars:
     ocp_cluster_name: ocp401
-    pv_requirements:
-      nfs_path: /ocp_root/
-      nfs_server: nfsexport01.ti.com
-      # defaults:
-      #  reclaimPolicy: Recycle
-      #  accessModes: ReadWriteOnce
-      resources:
-      - storageClassName: thin
-        size: "20Gi"
-        quantity: 14
-      - storageClassName: thin
-        size: "5Gi"
-        quantity: 20
-      - storageClassName: logging
-        size: "150Gi"
-        quantity: 3
-      - storageClassName: infra
-        size: "50Gi"
-        quantity: 2
-      - storageClassName: infra
-        size: "100Gi"
-        quantity: 1
-        accessModes: ReadWriteMany
-        reclaimPolicy: Retain
