@@ -17,3 +17,4 @@ all:
           tiaworker105.ocp401.ti.com:
   vars:
     ocp_cluster_name: ocp401
+    cluster_logging_es_storage_classname: logging

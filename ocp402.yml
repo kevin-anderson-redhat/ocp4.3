@@ -20,3 +20,4 @@ all:
           tiastorage202.ocp402.ti.com:
   vars:
     ocp_cluster_name: ocp402
+    cluster_logging_es_storage_classname: logging
