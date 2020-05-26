@@ -1,0 +1,6 @@
+cluster_logging_es_storage_classname: logging
+cluster_logging_es_storage_size: 150
+cluster_logging_es_request_cpu: 4
+cluster_logging_es_request_mem: 16Gi
+cluster_logging_es_limit_cpu: 4
+cluster_logging_es_limit_mem: 16Gi
