@@ -24,7 +24,7 @@
           network.openshift.io/policy-group: "ingress"
   when: def_ingress_ctlr.resources[0].status.endpointPublishingStrategy.type == 'HostNetwork'
 
-- name:
+- name: Update project-request template
   k8s:
     state: present
     definition:
@@ -67,11 +67,11 @@
          kind: Project
          metadata:
            annotations:
-             openshift.io/description: ${PROJECT_DESCRIPTION}
-             openshift.io/display-name: ${PROJECT_DISPLAYNAME}
-             openshift.io/requester: ${PROJECT_REQUESTING_USER}
+             openshift.io/description: '${PROJECT_DESCRIPTION}'
+             openshift.io/display-name: '${PROJECT_DISPLAYNAME}'
+             openshift.io/requester: '${PROJECT_REQUESTING_USER}'
            creationTimestamp: null
-           name: ${PROJECT_NAME}
+           name: '${PROJECT_NAME}'
          spec: {}
          status: {}
        - apiVersion: rbac.authorization.k8s.io/v1
@@ -79,7 +79,7 @@
          metadata:
            creationTimestamp: null
            name: admin
-           namespace: ${PROJECT_NAME}
+           namespace: '${PROJECT_NAME}'
          roleRef:
            apiGroup: rbac.authorization.k8s.io
            kind: ClusterRole
@@ -87,7 +87,7 @@
          subjects:
          - apiGroup: rbac.authorization.k8s.io
            kind: User
-           name: ${PROJECT_ADMIN_USER}
+           name: '${PROJECT_ADMIN_USER}'
        parameters:
        - name: PROJECT_NAME
        - name: PROJECT_DISPLAYNAME
@@ -95,7 +95,7 @@
        - name: PROJECT_ADMIN_USER
        - name: PROJECT_REQUESTING_USER
 
-- name:
+- name: Apply the project-request template to new project-requests
   k8s:
     state: present
     definition:
@@ -105,4 +105,4 @@
         name: cluster
       spec:
         projectRequestTemplate:
-          name: project-request 
+          name: project-request

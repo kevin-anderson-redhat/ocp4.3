@@ -17,34 +17,34 @@
     label: "{{ item }}"
 
   #
-  # The following tasks specify node selectors 
+  # The following tasks specify node selectors
   # and add infra taint toleration
   #
-  - import_role: ingress_controller
-  - import_role: internal_registry
-  - import_role: cluster_monitoring
-  - import_role: cluster_logging
+- import_role: ingress_controller
+- import_role: internal_registry
+- import_role: cluster_monitoring
+- import_role: cluster_logging
 
-  - name: Taint infrastructure nodes
-    k8s:
-      state: present
-      api_version: v1
-      definition:
-        kind: Node
-        metadata:
-          name: "{{ item }}"
-          labels:
-            node-role.kubernetes.io/infra: ""
-            # assume the worker label was removed above
-        spec:
-          taints:
-          - effect: NoSchedule
-            key: infra
-            value: reserved
-          - effect: NoExecute
-            key: infra
-            value: reserved
-    loop: "{{ groups.infra }}"
-    loop_control:
-      extended: yes
-      label: "{{ item }}"
+- name: Taint infrastructure nodes
+  k8s:
+    state: present
+    api_version: v1
+    definition:
+      kind: Node
+      metadata:
+        name: "{{ item }}"
+        labels:
+          node-role.kubernetes.io/infra: ""
+          # assume the worker label was removed above
+      spec:
+        taints:
+        - effect: NoSchedule
+          key: infra
+          value: reserved
+        - effect: NoExecute
+          key: infra
+          value: reserved
+  loop: "{{ groups.infra }}"
+  loop_control:
+    extended: yes
+    label: "{{ item }}"
