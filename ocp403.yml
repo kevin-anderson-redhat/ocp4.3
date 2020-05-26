@@ -1,0 +1,22 @@
+all:
+  children:
+    master:
+        hosts:
+          tiamaster200.ocp402.ti.com:
+          tiamaster201.ocp402.ti.com:
+          tiamaster202.ocp402.ti.com:
+    infra:
+        hosts:
+          tiaworker200.ocp402.ti.com:
+          tiaworker201.ocp402.ti.com:
+          tiaworker202.ocp402.ti.com:
+    worker:
+        hosts:
+          tiaworker203.ocp402.ti.com:
+          tiaworker204.ocp402.ti.com:
+          tiaworker205.ocp402.ti.com:
+          tiastorage200.ocp402.ti.com:
+          tiastorage201.ocp402.ti.com:
+          tiastorage202.ocp402.ti.com:
+  vars:
+    ocp_cluster_name: ocp403
