@@ -1,3 +1,12 @@
+#
+# The following tasks are derived from 
+#   https://docs.openshift.com/container-platform/4.3/logging/cluster-logging-deploying.html
+#
+
+#   https://docs.openshift.com/container-platform/4.3/logging/cluster-logging-deploying.html#cluster-logging-deploy-eo-cli_cluster-logging-deploying
+#
+# 1. Create a namespace for the Elasticsearch Operator
+#
   # /usr/local/bin/oc create -f eo-namespace.yaml 
   - name: Openshift operators redhat namespace
     k8s:
@@ -12,6 +21,10 @@
           labels:
             openshift.io/cluster-monitoring: "true"
 
+#
+# 2. Install the Elasticsearch Operator
+# 
+  # a. Create an operator Group
   # /usr/local/bin/oc create -f eo-og.yaml 
   - name: Openshift-Operators-RedHat  OperatorGroup
     k8s:
@@ -24,6 +37,9 @@
           namespace: openshift-operators-redhat 
         spec: {}
 
+
+
+  # c. Create a Subscription object
   # /usr/local/bin/oc create -f eo-sub.yaml 
   - name: ElasticSearch Operator subscription
     k8s:
@@ -41,6 +57,8 @@
           sourceNamespace: "openshift-marketplace"
           name: "elasticsearch-operator"
 
+  # f. Create a Role-based Access Control to give Prometheus access to the 
+  #    openshift-operators-redhat namespace
   # /usr/local/bin/oc create -f eo-rbac.yaml 
   - name: Prometheus role
     k8s:
@@ -80,10 +98,12 @@
         - kind: ServiceAccount
           name: prometheus-k8s
           namespace: openshift-operators-redhat
+
+#   https://docs.openshift.com/container-platform/4.3/logging/cluster-logging-deploying.html#cluster-logging-deploy-clo-cli_cluster-logging-deploying
 #
 # openshift-operators-redhat
 #
-
+# 1. Create the Namespace
   # /usr/local/bin/oc create -f clo-namespace.yaml 
   - name: Namespace openshift-logging 
     k8s:
@@ -100,6 +120,8 @@
           openshift.io/cluster-monitoring: "true"
 
 
+# 2. Install the Cluster Logging Operator
+  # a. Create the Operator Group
   # /usr/local/bin/oc create -f clo-og.yaml 
   - name: Cluster logging operator group
     k8s:
@@ -114,6 +136,7 @@
           targetNamespaces:
           - openshift-logging
 
+  # c. Create a Subscription
   # /usr/local/bin/oc create -f clo-sub.yaml
   - name: Cluster logging subscription
     k8s:
@@ -130,7 +153,10 @@
           source: redhat-operators 
           sourceNamespace: openshift-marketplace
 
-
+#
+# Create the cluster logging instance 
+#    Include the infrastructure taints and tolerations
+#
   - name: Logging infrastructure node selection and taint toleration
     k8s:
       state: present
@@ -145,8 +171,20 @@
           logStore:
             type: "elasticsearch"
             elasticsearch:
+              nodeCount: 3 
               nodeSelector:
                 node-role.kubernetes.io/infra: ''
+              redundancyPolicy: "SingleRedundancy"
+              resources:
+                limits:
+                  cpu: "{{ cluster_logging_es_limit_cpu }}"
+                  memory: "{{ cluster_logging_es_limit_mem }}"
+                requests:
+                  cpu: "{{ cluster_logging_es_request_cpu }}"
+                  memory: "{{ cluster_logging_es_request_mem }}"
+              storage:
+                storageClassName: "{{ cluster_logging_es_storage_classname }}"
+                size: "{{ cluster_logging_es_storage_size }}"
               type: "elasticsearch"
               tolerations:
                 - effect: NoSchedule
@@ -160,6 +198,7 @@
             kibana:
               nodeSelector:
                 node-role.kubernetes.io/infra: ''
+              replicas: 1
               tolerations:
                 - effect: NoSchedule
                   key: infra
@@ -172,6 +211,7 @@
             curator:
               nodeSelector:
                 node-role.kubernetes.io/infra: ''
+              schedule: "30 3 * * *"
               tolerations:
                 - effect: NoSchedule
                   key: infra
