@@ -1,5 +1,5 @@
 #
-# The following tasks are derived from 
+# The following tasks are derived from
 #   https://docs.openshift.com/container-platform/4.3/logging/cluster-logging-deploying.html
 #
 
@@ -7,10 +7,10 @@
 #
 # 1. Create a namespace for the Elasticsearch Operator
 #
-  # /usr/local/bin/oc create -f eo-namespace.yaml 
+  # /usr/local/bin/oc create -f eo-namespace.yaml
   - name: Openshift operators redhat namespace
     k8s:
-      name: openshift-operators-redhat 
+      name: openshift-operators-redhat
       state: present
       api_version: v1
       kind: Namespace
@@ -23,9 +23,9 @@
 
 #
 # 2. Install the Elasticsearch Operator
-# 
+#
   # a. Create an operator Group
-  # /usr/local/bin/oc create -f eo-og.yaml 
+  # /usr/local/bin/oc create -f eo-og.yaml
   - name: Openshift-Operators-RedHat  OperatorGroup
     k8s:
       state: present
@@ -34,13 +34,13 @@
         kind: OperatorGroup
         metadata:
           name: openshift-operators-redhat
-          namespace: openshift-operators-redhat 
+          namespace: openshift-operators-redhat
         spec: {}
 
 
 
   # c. Create a Subscription object
-  # /usr/local/bin/oc create -f eo-sub.yaml 
+  # /usr/local/bin/oc create -f eo-sub.yaml
   - name: ElasticSearch Operator subscription
     k8s:
       state: present
@@ -49,17 +49,17 @@
         kind: Subscription
         metadata:
           name: "elasticsearch-operator"
-          namespace: "openshift-operators-redhat" 
+          namespace: "openshift-operators-redhat"
         spec:
-          channel: "4.3" 
+          channel: "4.3"
           installPlanApproval: "Automatic"
-          source: "redhat-operators" 
+          source: "redhat-operators"
           sourceNamespace: "openshift-marketplace"
           name: "elasticsearch-operator"
 
-  # f. Create a Role-based Access Control to give Prometheus access to the 
+  # f. Create a Role-based Access Control to give Prometheus access to the
   #    openshift-operators-redhat namespace
-  # /usr/local/bin/oc create -f eo-rbac.yaml 
+  # /usr/local/bin/oc create -f eo-rbac.yaml
   - name: Prometheus role
     k8s:
       state: present
@@ -104,8 +104,8 @@
 # openshift-operators-redhat
 #
 # 1. Create the Namespace
-  # /usr/local/bin/oc create -f clo-namespace.yaml 
-  - name: Namespace openshift-logging 
+  # /usr/local/bin/oc create -f clo-namespace.yaml
+  - name: Namespace openshift-logging
     k8s:
       state: present
       api_version: logging.openshift.io/v1
@@ -122,7 +122,7 @@
 
 # 2. Install the Cluster Logging Operator
   # a. Create the Operator Group
-  # /usr/local/bin/oc create -f clo-og.yaml 
+  # /usr/local/bin/oc create -f clo-og.yaml
   - name: Cluster logging operator group
     k8s:
       state: present
@@ -131,7 +131,7 @@
         kind: OperatorGroup
         metadata:
           name: cluster-logging
-          namespace: openshift-logging 
+          namespace: openshift-logging
         spec:
           targetNamespaces:
           - openshift-logging
@@ -146,15 +146,15 @@
         kind: Subscription
         metadata:
           name: cluster-logging
-          namespace: openshift-logging 
+          namespace: openshift-logging
         spec:
-          channel: "4.3" 
+          channel: "4.3"
           name: cluster-logging
-          source: redhat-operators 
+          source: redhat-operators
           sourceNamespace: openshift-marketplace
 
 #
-# Create the cluster logging instance 
+# Create the cluster logging instance
 #    Include the infrastructure taints and tolerations
 #
   - name: Logging infrastructure node selection and taint toleration
@@ -171,7 +171,7 @@
           logStore:
             type: "elasticsearch"
             elasticsearch:
-              nodeCount: 3 
+              nodeCount: 3
               nodeSelector:
                 node-role.kubernetes.io/infra: ''
               redundancyPolicy: "SingleRedundancy"
